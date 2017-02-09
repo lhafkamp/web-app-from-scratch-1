@@ -26,11 +26,11 @@ section {
     width: 70vw;
     height: 90vh;
 }
-.section1 {
+#section1 {
     background-color: aqua;
 }
 
-.section2 {
+#section2 {
     background-color: brown;
 }
 .hide {
