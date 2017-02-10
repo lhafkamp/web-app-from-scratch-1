@@ -24,7 +24,6 @@
     var sections = {
         toggle: function (route) {
             var getHashNumber = route.slice(-1);
-            console.log(getHashNumber);
             var allSectionElements = document.querySelectorAll("section");
             allSectionElements.forEach(function (section) {
                 if (section.id === ("section" + getHashNumber)) {
