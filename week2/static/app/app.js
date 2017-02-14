@@ -2,7 +2,6 @@
  * Created by Diego on 13-02-17.
  */
 
-
 /**
 * Using API's
  *  - GeoNames/(Google map API)
@@ -21,18 +20,33 @@
 // );
 
 
-const GEONAMES = "api.geonames.org/postalCodeSearch?";
+fetch('https://randomuser.me/api');
 
-let postalcode = "2037pc";
-let country = "Nederland";
-
-const REQUEST = 'http://api.geonames.org/postalCodeLookupJSON?postalcode=' + postalcode  + '&country=' + country  + '&callback=getLocation&username=demo';
-
-let wtf = new JSONscriptRequest(REQUEST);
-console.log(wtf);
-
-
-
+// function getCountries(countryInfo) {
+//     countryInfo.then(
+//         (country) => {
+//             countries = country.map((el) => {
+//                 return {
+//                     name: el.name,
+//                     altNames: el.altSpellings
+//                 }
+//             });
+//             // Hier verder met code
+//         }
+//     );
+// };
+//
+// function requestAPI(stringURL) {
+//     return pegasus(stringURL);
+// };
+//
+// function main() {
+//     const URL = "https://restcountries.eu/rest/v1/all";
+//     getCountries(requestAPI(URL))
+// };
+//
+//
+// main();
 
 
 
