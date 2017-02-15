@@ -18,7 +18,7 @@
             window.onhashchange = function () {
                 sections.toggle(location.hash);
             };
-        }
+        },
     };
 
     var sections = {

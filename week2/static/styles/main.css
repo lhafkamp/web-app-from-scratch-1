@@ -1,10 +1,21 @@
-body {
-  background-color: red; }
-
-#frontpage {
+nav {
   display: flex;
   flex-direction: column;
-  font-size: 3rem;
-  font-size: calc(0.5rem + 3.33333vw); }
+  max-height: 20vh; }
+
+li {
+  text-decoration: none; }
+
+a {
+  width: 30px; }
+
+a[href~="#male_female"] {
+  content: url("img/male.svg"); }
+
+a[href~="#male"] {
+  content: url("img/male.svg"); }
+
+a[href~="#female"] {
+  content: url("img/female.svg"); }
 
 /*# sourceMappingURL=main.css.map */
