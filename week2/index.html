@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://use.fontawesome.com/efbb0f89aa.js"></script>
     <link rel="stylesheet" href="static/styles/main.css">
     <script src="static/app/routie.min.js"></script>
 
@@ -9,17 +10,21 @@
 </head>
 <body>
 <nav>
+
+    <h1>Main navigation</h1>
+
     <ul>
-        <li><a href="#male_female"></a></li>
-        <li><a href="#male"></a></li>
-        <li><a href="#female"></a></li>
+        <li><a href="#male_female" class="fa fa-5x fa-male"><i class="fa fa-female" aria-hidden="true"></i></a></li>
+        <li><a href="#male" class="fa fa-5x fa-male"></a></li>
+        <li><a href="#female" class="fa fa-5x fa-female"></a></li>
     </ul>
+
 </nav>
-<div class="section-container">
-    <section id="male_female" class="hide"></section>
-    <section id="male" class="hide"></section>
-    <section id="female" class="hide"></section>
-</div>
+<section id="gender-groups">
+    <article id="male_female" class="hide"></article>
+    <article id="male" class="hide"></article>
+    <article id="female" class="hide"></article>
+</section>
 </body>
 
 <script src="static/app/app.js"></script>

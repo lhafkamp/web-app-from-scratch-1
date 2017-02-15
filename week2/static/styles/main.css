@@ -7,15 +7,9 @@ li {
   text-decoration: none; }
 
 a {
-  width: 30px; }
+  text-decoration: none; }
 
-a[href~="#male_female"] {
-  content: url("img/male.svg"); }
-
-a[href~="#male"] {
-  content: url("img/male.svg"); }
-
-a[href~="#female"] {
-  content: url("img/female.svg"); }
+.hide {
+  display: none; }
 
 /*# sourceMappingURL=main.css.map */
