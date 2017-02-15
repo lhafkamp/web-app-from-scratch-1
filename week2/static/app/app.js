@@ -50,7 +50,7 @@
     function loadJSON(apiURL, hashURL) {
         fetch(apiURL)
             .then(data => data.json())
-            .then(data => appendPeople(data.results, hashURL.replace('#', '')))
+            .then(data => resetAndAppendPeopleToSection(data.results, hashURL.replace('#', '')))
     }
 
 
@@ -60,7 +60,7 @@
         }
     }
 
-    function hideSections(sectionID) {
+    function hideSections(section, sectionID) {
         articlesByGender = Array.from(document.getElementById("gender-groups").getElementsByTagName("article"));
         articlesByGender.forEach(article => {
             "use strict";
@@ -68,19 +68,28 @@
         })
     }
 
-
-    function appendPeople(randomPeople, sectionID) {
-        const section = document.getElementById(sectionID);
+    function resetSections(section ,sectionID) {
         clearSection(section);
         hideSections(sectionID);
-        randomPeople.forEach(person => {
-            let imgNode = document.createElement("img");
-            imgNode.src = person.picture.large;
-            if (imgNode != null) {
-                section.appendChild(imgNode);
-            }
-        }
-    )};
+    }
+
+    function createHtmlWithTemplate(randomPersons, templateID) {
+        console.log(templateID);
+        const template = document.getElementById(templateID);
+        console.log(template);
+        const compiledTemplate = Handlebars.compile(template);
+        const generatedHTML = compiledTemplate(randomPersons);
+        return generatedHTML;
+    }
+
+    function resetAndAppendPeopleToSection(randomPersons, sectionID) {
+        const section = document.getElementById(sectionID);
+        console.log(sectionID);
+        console.log(section);
+        resetSections(section, sectionID);
+        createHtmlWithTemplate(randomPersons, "profile-picture-" + sectionID);
+        section.innerHTML = createHtmlWithTemplate(randomPersons, "profile-picture-" + sectionID);
+    };
 
     let sections = {
         toggle: function (hashURL) {
