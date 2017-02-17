@@ -98,13 +98,13 @@
     }
 
     function createProfile(personInfo) {
-        console.log(personInfo);
         const subjects = ["name","location"];
         const userPage =  document.getElementById("gender-groups");
 
 
         let tbl = document.createElement("table");
         tbl.classList.add("table-fill");
+        tbl.id = "personTable";
         let tblbody = document.createElement("tbody");
 
         for (var term in subjects) {
@@ -138,13 +138,25 @@
     }
 
     function showUserInformation(hashURL) {
-        if( hashURL ) { //check of het empty is
-            downloadUserInformation(getUserAPIurl(hashURL));
-        }
-    };
+        const userPage =  Array.from(document.getElementById("gender-groups").getElementsByTagName("article"));
+        userPage.forEach(article => {
+            "use strict";
+            try {
+                document.getElementById("personTable").remove();
+            } catch (typeError) {
+            }
+            if (!article.classList.contains("hide")) {
+                downloadUserInformation(getUserAPIurl(hashURL));
+            }
+        });
+    }
 
     let sections = {
         toggle: function (hashURL) {
+            try {
+                document.getElementById("personTable").remove();
+            } catch (typeError) {
+            }
             loadJSON(createURL(hashURL), hashURL);
         }
     };
