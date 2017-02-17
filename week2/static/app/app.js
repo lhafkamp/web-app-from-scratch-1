@@ -29,14 +29,17 @@
     let routes = {
         init: function () {
             routie({
-                'male_female': function() {
+                'male-female?:id': function(id) {
                     sections.toggle(location.hash)
                 },
-                'male': function() {
+                'male?:id': function(id) {
                     sections.toggle(location.hash)
                 },
-                'female': function() {
+                'female?:id': function(id) {
                     sections.toggle(location.hash);
+                },
+                '*': function() {
+                    showUserInformation(location.hash);
                 }
             })
         }
@@ -60,12 +63,10 @@
         }
     }
 
-    function hideSections(section, sectionID) {
+    function hideSections(sectionID) {
         articlesByGender = Array.from(document.getElementById("gender-groups").getElementsByTagName("article"));
-        articlesByGender.forEach(article => {
-            "use strict";
-            article.id == sectionID ? article.classList.remove("hide") : article.classList.add("hide");
-        })
+        articlesByGender.map(article => {
+            article.id === sectionID ? article.classList.remove("hide") : article.classList.add("hide")})
     }
 
     function resetSections(section ,sectionID) {
@@ -73,22 +74,73 @@
         hideSections(sectionID);
     }
 
-    function createHtmlWithTemplate(randomPersons, templateID) {
-        console.log(templateID);
-        const template = document.getElementById(templateID);
-        console.log(template);
-        const compiledTemplate = Handlebars.compile(template);
-        const generatedHTML = compiledTemplate(randomPersons);
-        return generatedHTML;
+        function appendPeople(section, randomPersons) {
+        randomPersons.forEach(person => {
+            "use strict";
+            let imgNode = document.createElement("img");
+            imgNode.src = person.picture.large;
+
+            let linkNode = document.createElement("a");
+            linkNode.href = "#" + person.login.username;
+            linkNode.appendChild(imgNode);
+            section.appendChild(linkNode);
+        });
     }
 
     function resetAndAppendPeopleToSection(randomPersons, sectionID) {
         const section = document.getElementById(sectionID);
-        console.log(sectionID);
-        console.log(section);
         resetSections(section, sectionID);
-        createHtmlWithTemplate(randomPersons, "profile-picture-" + sectionID);
-        section.innerHTML = createHtmlWithTemplate(randomPersons, "profile-picture-" + sectionID);
+        appendPeople(section, randomPersons);
+    }
+
+    function getUserAPIurl(hashURL) {
+        return "https://randomuser.me/api/?results=1&inc=name,location&username=" + hashURL.replace('#', '');
+    }
+
+    function createProfile(personInfo) {
+        console.log(personInfo);
+        const subjects = ["name","location"];
+        const userPage =  document.getElementById("gender-groups");
+
+
+        let tbl = document.createElement("table");
+        tbl.classList.add("table-fill");
+        let tblbody = document.createElement("tbody");
+
+        for (var term in subjects) {
+
+            let tblHead = document.createElement("th");
+            tblHead.colSpan = "2";
+            let cellText = document.createTextNode(subjects[term].toUpperCase());
+            tblHead.appendChild(cellText);
+            tblbody.appendChild(tblHead);
+            for (var key in personInfo[subjects[term]]) {
+                const tblRow = document.createElement("tr");
+                let tblCell = document.createElement("td");
+                cellText = document.createTextNode(key);
+                tblCell.appendChild(cellText);
+                tblRow.appendChild(tblCell);
+                tblCell = document.createElement("td");
+                cellText = document.createTextNode(personInfo[subjects[term]][key]);
+                tblCell.appendChild(cellText);
+                tblRow.appendChild(tblCell);
+                tblbody.appendChild(tblRow);
+            }
+            tbl.appendChild(tblbody);
+        }
+        userPage.appendChild(tbl);
+    }
+
+    function downloadUserInformation(apiURL) {
+        fetch(apiURL)
+            .then(data => data.json())
+            .then(data => createProfile(data.results[0]));
+    }
+
+    function showUserInformation(hashURL) {
+        if( hashURL ) { //check of het empty is
+            downloadUserInformation(getUserAPIurl(hashURL));
+        }
     };
 
     let sections = {
