@@ -9,3 +9,5 @@ For this assignment i created an app for showing 5 random users. You can see the
 Since the api is random i wasnt able to retrieve the person.
 
 I will to get a better understanding of Javascript and How i should write the code in the vacation.
+
+#http://wafs-week2.surge.sh/
