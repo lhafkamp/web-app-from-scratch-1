@@ -32,7 +32,7 @@
         markerRij: []
     };
     var EventTarget = {
-        this.listeners: {};
+        listeners = {},
         EventTarget.prototype = {
             constructor: EventTarget, addListener: function (a, c) {
                 this.listeners[a] === [] && "undefined" === typeof this.listeners[a];
@@ -62,7 +62,7 @@
 }
     var ET = new EventTarget();
     var gpsSettings = {
-        function init() {
+        init : function() {
             debugMessage("Controleer of GPS beschikbaar is...");
             ET.addListener(defaultSettings.gpsAvailable, startInterval());
             ET.addListener(defaultSettings.gpsUnavailable, function () {
@@ -70,23 +70,23 @@
             });
 
             (geo_position_js.init()) ? ET.fire(defaultSettings.gpsAvailable) : ET.fire(defaultSettings.gpsUnavailable);
-        };
-        function startInterval(event) {
+        },
+        startInterval : function(event) {
             ("GPS is beschikbaar, vraag positie.");
             updatePosition();
             defaultSettings.interval = self.setInterval(updatePosition, defaultSettings.refreshRate);
             ET.addListener(defaultSettings.positionUpdated, check);
-        };
-        function updatePosition() {
+        },
+        updatePosition: function() {
             defaultSettings.intervalCounter++;
             geo_position_js.getCurrentPosition(setPostion, geoErrorHandler, {enableHighAccuracy: true});
-        };
-        function setPostion(position) {
+        },
+        setPostion : function (position) {
             defaultSettings.currentPosition = position;
             ET.fire("POSITION_UPDATED");
             debugMessage(intervalCounter + " positie lat:" + position.coords.latitude + " long:" + position.coords.longitude);
-        };
-        function check(event) {
+        },
+        check :function (event) {
             for (var i = 0; i < locations.length; i++) {
                 var location = {coords: {latitude: locations[i][3], longitude: locations[i][4]}};
                 if (calculateDistance(location, currentPosition) < locations[i][2]) {
@@ -101,14 +101,15 @@
                     }
                 }
             }
-        }
-        function calculateDistance(p1, p2) {
+        },
+        calculateDistance: function(p1, p2) {
             var pos1 = new google.maps.LatLng(p1.coords.latitude, p1.coords.longitude);
             var pos2 = new google.maps.LatLng(p2.coords.latitude, p2.coords.longitude);
             return Math.round(google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2), 0);
         }
-    }
-    function generateMap(myOptions, canvasID) {
+    };
+
+    function generateMap (myOptions, canvasID) {
         debugMessage("Genereer een Google Maps kaart en toon deze in #" + canvasId);
         var map = new google.maps.Map(document.getElementById(canvasId), myOptions);
         var routeList = [];
@@ -169,13 +170,13 @@
         };
     }
     var debuggerHandlers = {
-            function _geo_error_handler(code, message) {
+        geoErrorHandler : function (code, message) {
             debugMessage("geo.js error " + code + ": " + message);
-        }
-        function debugMessage(message) {
+        },
+        debugMessage : function(message) {
             (customDebugging && debugId) ? document.getElementById(debugId).innerHTML : console.log(message);
-        }
-        function set_custom_debugging(debugId) {
+        },
+        setCustomDebugging : function(debugId) {
             debugId = this.debugId;
             customDebugging = true;
         }
