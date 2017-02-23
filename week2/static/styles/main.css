@@ -13,7 +13,15 @@ section {
   display: flex;
   flex-direction: column; }
 
+a {
+  height: auto;
+  width: auto; }
+
+div {
+  text-align: center; }
+
 img {
+  margin-bottom: -1em;
   border-radius: 50%;
   border: 3px solid darkslategrey; }
 
