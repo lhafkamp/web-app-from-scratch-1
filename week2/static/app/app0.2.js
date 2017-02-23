@@ -19,23 +19,32 @@
         },
     };
 
+
     let $userData = {
         setUsers : () => {
-            const userPictureElement = document.getElementById("users");
-            const profileTemplate = document.getElementById("profile-picture").innerHTML;
-            let renderer = Handlebars.compile(profileTemplate);
-            let userPictures = $userData.userInformation.reduce((html, user) => {return html + renderer(user)}, "");
-            userPictureElement.innerHTML = userPictures;
+            fillTemplate($userData.userInformation, "users", "profile-picture")
         },
         showUser : (id) => {
+            fillTemplate($userData.userInformation.filter((user) => user.login.username === id), "user-information", "user-info")
+        },
+        clearUserInfo : () => {
+            "use strict";
             const userInformationElement = document.getElementById("user-information");
-            const userTableTemplate = document.getElementById("user-info").innerHTML;
-            userInfo = $userData.userInformation.filter((user) => user.login.username === id)
-            let renderer = Handlebars.compile(userTableTemplate);
-            let userTableFilled = userInfo.reduce((html, user) => {return html + renderer(user)}, "");
-            userInformationElement.innerHTML = userTableFilled;
+            const userPictureElement = document.getElementById("users");
+            userPictureElement.innerHTML = "";
+            userInformationElement.innerHTML = "";
         }
     };
+
+
+    function fillTemplate(data, element, templateID) {
+        const elementToFill = document.getElementById(element);
+        const templateToFill = document.getElementById(templateID).innerHTML;
+        const renderer = Handlebars.compile(templateToFill);
+        let htmlForElement = data.reduce((html, user) => {return html + renderer(user)}, "");
+        elementToFill.innerHTML = htmlForElement;
+    };
+
 
     const app = {
         init: function() {
@@ -43,6 +52,7 @@
             routes.init();
         }
     };
+
 
     const routes = {
         init: function () {
@@ -61,6 +71,7 @@
         }
     };
 
+
     const sections = {
         toggle: function (gender, id) {
             "use strict";
@@ -68,6 +79,7 @@
             if (id) {
                 $userData.showUser(id);
             } else {
+                $userData.clearUserInfo();
                 $apiCache.downloadApiData();
             }
         },

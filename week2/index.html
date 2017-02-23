@@ -5,8 +5,7 @@
     <script src="https://use.fontawesome.com/efbb0f89aa.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Unica+One|Vollkorn" rel="stylesheet">
     <link rel="stylesheet" href="static/styles/main.css">
-    <script src="static/app/routie.min.js"></script>
-    <script src="static/app/handlebars-v4.0.5.js"></script>
+
 
     <title>Week 2</title>
 </head>
@@ -16,18 +15,72 @@
     <h1>Five random user's by gender</h1>
 
     <ul>
-        <li><a href="#male" class="fa fa-3x fa-male"></a></li>
-        <li><a href="#male-female" class="fa fa-3x fa-male"><i class="fa fa-female" aria-hidden="true"></i></a></li>
-        <li><a href="#female" class="fa fa-3x fa-female"></a></li>
+        <li><a href="#male/" class="fa fa-2x fa-male"></a></li>
+        <li><a href="#both/" class="fa fa-2x fa-male"><i class="fa fa-female" aria-hidden="true"></i></a></li>
+        <li><a href="#female/" class="fa fa-2x fa-female"></a></li>
     </ul>
 
 </nav>
 <section id="gender-groups">
-    <article id="male-female" class="people hide"></article>
-    <article id="male" class="people hide"></article>
-    <article id="female" class="people hide"></article>
+    <article id="users" class="people"></article>
 </section>
+<section id="user-information"></section>
 </body>
-
-<script src="static/app/app.js"></script>
+<!--HandleBars templates-->
+<script type="text/x-handlebars-template" id="profile-picture">
+    <div>
+        <a href="#{{gender}}/{{login.username}}">
+            <img src="{{picture.large}}" alt="">
+        </a>
+        <p>{{login.username}}</p>
+    </div>
+</script>
+<script type="text/x-handlebars-template" id="user-info">
+    <table class="table-fill">
+    <tbody>
+        <th colspan="2">Name</th>
+        <tr>
+            <td>Title</td>
+            <td>{{name.title}}</td>
+        </tr>
+        <tr>
+            <td>First</td>
+            <td>{{name.first}}</td>
+        </tr>
+        <tr>
+            <td>Last</td>
+            <td>{{name.last}}</td>
+        </tr>
+        <th colspan="2">Login</th>
+        <tr>
+            <td>Username</td>
+            <td>{{login.username}}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>{{email}}</td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td>{{login.password}}</td>
+        </tr>
+        <th colspan="2">Location</th>
+        <tr>
+            <td>City</td>
+            <td>{{location.city}}</td>
+        </tr>
+        <tr>
+            <td>Postcode</td>
+            <td>{{location.postcode}}</td>
+        </tr>
+        <tr>
+            <td>Street</td>
+            <td>{{location.street}}</td>
+        </tr>
+    </tbody>
+    </table>
+</script>
+<script src="static/app/routie.min.js"></script>
+<script src="static/app/handlebars-v4.0.5.js"></script>
+<script src="static/app/app0.2.js"></script>
 </html>
