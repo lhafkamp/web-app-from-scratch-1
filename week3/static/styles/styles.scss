@@ -1,0 +1,234 @@
+//set1
+// <link href="https://fonts.googleapis.com/css?family=Unica+One|Vollkorn" rel="stylesheet">
+$sans-serif-font: 'Vollkorn', serif;
+$serif-font: 'Unica One', cursive;
+
+$typography-rem-base: 16;
+$typography-breakpoint: 1200;
+$typography-growth: 0.5;
+
+
+$green: #B9AF2B;
+$orange: #D76145;
+$dblue: #485A5A;
+$brown: #E3CFB4;
+
+
+
+$typography-scale: (
+        alpha: 48,
+        beta: 36,
+        gamma: 30,
+        delta: 24,
+        epsilon: 20,
+        zeta: 16,
+        eta: 14
+);
+
+@mixin center {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+
+@mixin font-size($name, $rule: null) {
+  $size: map-get($typography-scale, $name);
+
+
+
+  @if (type-of($name) != string) {
+    @error "`#{$name}` needs to be a string.";
+  }
+
+  font-size: ($size / $typography-rem-base) * 1rem#{$rule};
+  font-size: calc(#{$typography-growth * 1rem} + #{(($size - ($typography-growth * $typography-rem-base)) / $typography-breakpoint) * 100vw})#{$rule}
+}
+
+@mixin centerText {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+@mixin vBox {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin hBox {
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin box($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin triple-borders($colorOne: #3C3C3C, $colorTwo: #999999, $colorThree: #000000, $radius: 0) {
+  border: 1px solid $colorOne;
+
+  @include border-radius($radius);
+
+  @include css3-prefix('box-shadow', "0 0 0 1px #{$colorTwo}, 0 0 0 2px #{$colorThree}");
+}
+
+@mixin breakpoint($point) {
+  @if $point == large {
+    @media (min-width: 64.375em) { @content; }
+  }
+  @else if $point == medium {
+    @media (min-width: 50em) { @content; }
+  }
+  @else if $point == small {
+    @media (min-width: 37.5em)  { @content; }
+  }
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  border-radius: $radius;
+  background-clip: padding-box;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+  margin: 0;
+  font-family: $sans-serif-font;
+}
+#countries {
+  li {
+    height: 32px;
+    width: 32px;
+    padding: 0;
+    transition: 1s;
+  }
+  li:hover {
+    background-color: black;
+  }
+
+}
+.people {
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: space-around;
+}
+.hide {
+  display: none;
+}
+section {
+  display: flex;
+  flex-direction: column;
+}
+a {
+  height: auto;
+  width: auto;
+}
+div {
+  text-align: center;
+}
+img {
+  margin-bottom: -1em;
+  border-radius: 50%;
+  border: 3px solid darkslategrey;
+}
+nav {
+  @include vBox;
+  list-style-type: none;
+  border-radius: 5px;
+  h1 {
+    @include font-size(alpha);
+    position: relative;
+    margin: 0;
+    align-self: flex-start;
+  }
+  ul {
+    padding-left: 0;
+    display: flex;
+    justify-content: space-around;
+    background: silver;
+  }
+  li {
+    @include font-size(beta);
+    list-style-type: none;
+    border-radius: 5px;
+    background-color: $dblue;
+    padding: 0.5em;
+  }
+  .submenu {
+    padding: 0;
+    display: none;
+  }
+  .submenu li {
+    padding: 0em;
+  }
+  li:hover {
+    background-color: darken($dblue, 10);
+  }
+  a {
+    @include center;
+    color: #fff;
+  }
+  li:hover .submenu{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+  }
+  i {
+    text-decoration: inherit;
+  }
+
+}.table-fill {
+   background: white;
+   border-radius:3px;
+   border-collapse: collapse;
+   height: 320px;
+   margin: auto;
+   max-width: 600px;
+   padding:5px;
+   width: 100%;
+   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+   animation: float 5s infinite;
+ }
+
+th {
+  color:#D5DDE5;;
+  background:$dblue;
+  border:4px solid #9ea7af;
+  @include font-size(beta);
+  text-align:left;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  vertical-align:middle;
+}
+
+tr {
+  border-top: 1px solid #C1C3D1;
+  border-bottom-: 1px solid #C1C3D1;
+  color:#666B85;
+  font-size:16px;
+  font-weight:normal;
+  text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+}

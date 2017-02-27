@@ -4,7 +4,7 @@
 (function () {
     const $apiCache = {
         settings : {
-            url: "https://randomuser.me/api/?results=30",
+            url: "https://randomuser.me/api/?results=100",
             gender: "both"
         },
         downloadApiData: () => {
@@ -12,25 +12,33 @@
             fetch($apiCache.settings.url) //Kan dit niet met this?
                 .then(data => data.json())
                 .then(data => data.results)
-                .then(data => localStorage.setItem(data))
-                // .then(data => data.filter((user) => "both" === $apiCache.settings.gender ? true: user.gender === $apiCache.settings.gender))
-                // .then(data => data.slice(0, 6))
-                // .then(data => $userData.userInformation = data)
-                .then(data => $userData.setUsers())
+                .then(data => localStorage.setItem("users", JSON.stringify(data)))
         },
     };
 
 
     const $userData = {
-        setUsers : () => {
-            fillTemplate($userData.userInformation, "users", "profile-picture")
+        showPersonsByGender : () => {
+            let users = JSON.parse(localStorage.getItem("users")).filter((user) => user.gender === $apiCache.settings.gender || $apiCache.settings.gender === "both");
+            fillTemplate(users, "users", "profile-picture")
+        },
+        filterByCountry : (e) => {
+            "use strict";
+            console.log($apiCache.settings.gender);
+            console.log($apiCache.settings.gender !== 'both');
+            if ($apiCache.settings.gender !== 'both') {
+                fillTemplate(JSON.parse(localStorage.getItem("users")).filter((user) => $apiCache.settings.gender === user.gender && user.nat === e.target.getAttribute("country").toUpperCase()), "users", "profile-picture")
+            } else {
+                fillTemplate(JSON.parse(localStorage.getItem("users")).filter((user) =>  user.nat === e.target.getAttribute("country").toUpperCase()), "users", "profile-picture")
+            }
         },
         showUser : (id) => {
-            fillTemplate($userData.userInformation.filter((user) => user.login.username === id), "user-information", "user-info")
+            fillTemplate(JSON.parse(localStorage.getItem("users")).filter((user) => user.login.username === id), "user-information", "user-info")
         },
         clearUserInfo : () => {
             "use strict";
             const userInformationElement = document.getElementById("user-information");
+            console.log(userInformationElement);
             const userPictureElement = document.getElementById("users");
             userPictureElement.innerHTML = "";
             userInformationElement.innerHTML = "";
@@ -43,13 +51,20 @@
         const templateToFill = document.getElementById(templateID).innerHTML;
         const renderer = Handlebars.compile(templateToFill);
         let htmlForElement = data.reduce((html, user) => {return html + renderer(user)}, "");
-        elementToFill.insertAdjacentHTML('afterbegin', htmlForElement);
+        elementToFill.innerHTML = htmlForElement;
     };
 
+
+    function initiateCountryLinks() {
+        const countryFilter = Array.from(document.getElementsByClassName("flag"));
+        countryFilter.forEach((country) => {country.addEventListener("click", $userData.filterByCountry)});
+    }
 
     const app = {
         init: function() {
             "use strict";
+            $apiCache.downloadApiData();
+            initiateCountryLinks();
             routes.init();
         }
     };
@@ -78,7 +93,7 @@
                 $userData.showUser(id);
             } else {
                 $userData.clearUserInfo();
-                $apiCache.downloadApiData();
+                $userData.showPersonsByGender();
             }
         },
     };

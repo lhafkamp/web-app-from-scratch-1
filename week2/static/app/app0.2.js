@@ -15,13 +15,13 @@
                 .then(data => data.filter((user) => "both" === $apiCache.settings.gender ? true: user.gender === $apiCache.settings.gender))
                 .then(data => data.slice(0, 6))
                 .then(data => $userData.userInformation = data)
-                .then(data => $userData.setUsers())
+                .then(data => $userData.showPersonsByGender())
         },
     };
 
 
     const $userData = {
-        setUsers : () => {
+        showPersonsByGender : () => {
             fillTemplate($userData.userInformation, "users", "profile-picture")
         },
         showUser : (id) => {
@@ -49,7 +49,10 @@
     const app = {
         init: function() {
             "use strict";
+            $apiCache.downloadApiData();
             routes.init();
+
+            sections.loader.show();
         }
     };
 
