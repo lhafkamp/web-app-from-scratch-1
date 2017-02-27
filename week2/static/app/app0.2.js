@@ -2,7 +2,7 @@
  * Created by Diego Staphorst on 23-2-2017.
  */
 (function () {
-    let $apiCache = {
+    const $apiCache = {
         settings : {
             url: "https://randomuser.me/api/?results=30",
             gender: "both"
@@ -20,7 +20,7 @@
     };
 
 
-    let $userData = {
+    const $userData = {
         setUsers : () => {
             fillTemplate($userData.userInformation, "users", "profile-picture")
         },
@@ -42,7 +42,7 @@
         const templateToFill = document.getElementById(templateID).innerHTML;
         const renderer = Handlebars.compile(templateToFill);
         let htmlForElement = data.reduce((html, user) => {return html + renderer(user)}, "");
-        elementToFill.innerHTML = htmlForElement;
+        elementToFill.insertAdjacentHTML('afterbegin', htmlForElement);
     };
 
 
@@ -58,13 +58,10 @@
         init: function () {
             "use strict";
             routie({
-                "" : () => {
-                    console.log("main");
-                },
                 "*/" :  (gender) => {
                     sections.toggle(gender);
                 },
-                "*/:id" :  (gender ,id) => {
+                "*/:id" :  (gender, id) => {
                     sections.toggle(gender, id);
                 },
             })
