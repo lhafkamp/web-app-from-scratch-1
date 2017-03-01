@@ -10,6 +10,12 @@ body {
 #countries li:hover {
   background-color: black; }
 
+#sorter {
+  font-size: 1rem;
+  font-size: calc(0.5rem + 0.66667vw);
+  cursor: pointer;
+  color: white; }
+
 .people {
   flex-wrap: wrap;
   display: flex;

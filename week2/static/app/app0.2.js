@@ -15,16 +15,16 @@
                 .then(data => data.filter((user) => "both" === $apiCache.settings.gender ? true: user.gender === $apiCache.settings.gender))
                 .then(data => data.slice(0, 6))
                 .then(data => $userData.userInformation = data)
-                .then(data => $userData.showPersonsByGender())
+                .then(data => $userData.filterUsersByGender())
         },
     };
 
 
     const $userData = {
-        showPersonsByGender : () => {
+        filterUsersByGender : () => {
             fillTemplate($userData.userInformation, "users", "profile-picture")
         },
-        showUser : (id) => {
+        showSpecificUser : (id) => {
             fillTemplate($userData.userInformation.filter((user) => user.login.username === id), "user-information", "user-info")
         },
         clearUserInfo : () => {
@@ -77,7 +77,7 @@
             "use strict";
             $apiCache.settings.gender = gender;
             if (id) {
-                $userData.showUser(id);
+                $userData.showSpecificUser(id);
             } else {
                 $userData.clearUserInfo();
                 $apiCache.downloadApiData();

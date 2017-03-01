@@ -129,6 +129,11 @@ body {
   li:hover {
     background-color: black;
   }
+}
+#sorter {
+  @include font-size(zeta);
+  cursor: pointer;
+  color: white;
 
 }
 .people {

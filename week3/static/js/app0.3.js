@@ -17,55 +17,82 @@
     };
 
 
-    const $userData = {
-        showPersonsByGender : () => {
+    const $userDataController = {
+        filterUsersByGender : () => {
             let users = JSON.parse(localStorage.getItem("users")).filter((user) => user.gender === $apiCache.settings.gender || $apiCache.settings.gender === "both");
-            fillTemplate(users, "users", "profile-picture")
+            userDataView.fillTemplate(users, "users", "profile-picture")
         },
-        filterByCountry : (e) => {
+        filterUsersByCountry : (e) => {
             "use strict";
-            console.log($apiCache.settings.gender);
-            console.log($apiCache.settings.gender !== 'both');
+            $userDataController.clearUserInfo();
             if ($apiCache.settings.gender !== 'both') {
-                fillTemplate(JSON.parse(localStorage.getItem("users")).filter((user) => $apiCache.settings.gender === user.gender && user.nat === e.target.getAttribute("country").toUpperCase()), "users", "profile-picture")
+                userDataView.fillTemplate(JSON.parse(localStorage.getItem("users")).filter((user) => $apiCache.settings.gender === user.gender && user.nat === e.target.getAttribute("country").toUpperCase()), "users", "profile-picture")
             } else {
-                fillTemplate(JSON.parse(localStorage.getItem("users")).filter((user) =>  user.nat === e.target.getAttribute("country").toUpperCase()), "users", "profile-picture")
+                userDataView.fillTemplate(JSON.parse(localStorage.getItem("users")).filter((user) =>  user.nat === e.target.getAttribute("country").toUpperCase()), "users", "profile-picture")
             }
         },
-        showUser : (id) => {
-            fillTemplate(JSON.parse(localStorage.getItem("users")).filter((user) => user.login.username === id), "user-information", "user-info")
+        showSpecificUser : (id) => {
+            userDataView.fillTemplate(JSON.parse(localStorage.getItem("users")).filter((user) => user.login.username === id), "user-information", "user-info")
+        },
+        sortByUserName() {
+            "use strict";
+            const allUsersShown = Array.from(document.querySelectorAll('#users div'));
+
+            const orderedUsersNames = allUsersShown.sort((a, b) => a.innerText > b.innerText ? 1 : -1);
+
+            let orderedUsersData = []
+
+            orderedUsersNames.map((orderedUser) => {
+                JSON.parse(localStorage.getItem("users")).map((allUser) => {
+                    if (allUser.login.username === orderedUser.innerText.trim()) orderedUsersData.push(allUser);
+                })
+            });
+
+            userDataView.fillTemplate(orderedUsersData, "users", "profile-picture");
+
         },
         clearUserInfo : () => {
             "use strict";
             const userInformationElement = document.getElementById("user-information");
-            console.log(userInformationElement);
             const userPictureElement = document.getElementById("users");
             userPictureElement.innerHTML = "";
             userInformationElement.innerHTML = "";
         }
     };
 
+    const userDataView = {
+        fillTemplate : (data, element, templateID) => {
+            "use strict";
+            console.log(data);
+            const elementToFill = document.getElementById(element);
+            const templateToFill = document.getElementById(templateID).innerHTML;
+            const renderer = Handlebars.compile(templateToFill);
+            let htmlForElement = data.reduce((html, user) => {return html + renderer(user)}, "");
+            elementToFill.innerHTML = htmlForElement;
+        },
+        initiateCountryFilters : () => {
+            "use strict";
+            const countryFilter = Array.from(document.getElementsByClassName("flag"));
+            countryFilter.map((country) => {country.addEventListener("click", $userDataController.filterUsersByCountry)});
 
-    function fillTemplate(data, element, templateID) {
-        const elementToFill = document.getElementById(element);
-        const templateToFill = document.getElementById(templateID).innerHTML;
-        const renderer = Handlebars.compile(templateToFill);
-        let htmlForElement = data.reduce((html, user) => {return html + renderer(user)}, "");
-        elementToFill.innerHTML = htmlForElement;
+        },
+        initiateSort : () => {
+            "use strict";
+            const sortFilter = document.getElementById("sorter");
+            sortFilter.addEventListener("click", $userDataController.sortByUserName)
+        }
     };
 
-
-    function initiateCountryLinks() {
-        const countryFilter = Array.from(document.getElementsByClassName("flag"));
-        countryFilter.forEach((country) => {country.addEventListener("click", $userData.filterByCountry)});
-    }
 
     const app = {
         init: function() {
             "use strict";
-            $apiCache.downloadApiData();
-            initiateCountryLinks();
+            if (!localStorage.getItem("users")) {
+                $apiCache.downloadApiData();
+            }
             routes.init();
+            userDataView.initiateCountryFilters(); // Misschien op andere manier
+            userDataView.initiateSort(); // Misschien op andere manier
         }
     };
 
@@ -74,6 +101,9 @@
         init: function () {
             "use strict";
             routie({
+                "" : (gender) => {
+                    sections.toggle("both");
+                },
                 "*/" :  (gender) => {
                     sections.toggle(gender);
                 },
@@ -90,10 +120,12 @@
             "use strict";
             $apiCache.settings.gender = gender;
             if (id) {
-                $userData.showUser(id);
+                $userDataController.clearUserInfo();
+                $userDataController.filterUsersByGender();
+                $userDataController.showSpecificUser(id);
             } else {
-                $userData.clearUserInfo();
-                $userData.showPersonsByGender();
+                $userDataController.clearUserInfo();
+                $userDataController.filterUsersByGender();
             }
         },
     };
