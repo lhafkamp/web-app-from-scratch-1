@@ -14,7 +14,7 @@ _The first three filters can be combined._
 
 ###Flowchart and Actor diagram
 
-[[web-app-from-scratch/week3/spa-week3-flow.png]]
+[[https://github.com/djaygo/web-app-from-scratch/week3/spa-week3-flow.png]]
 ###Wishlist
 * Add different kind of filters
 * Better code structure
