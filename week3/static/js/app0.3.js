@@ -64,8 +64,15 @@
             userInformationElement.innerHTML = "";
         }
     };
-
+    
+     /* I'm pretty sure you can write functions as:
+        initiateCountryFilters() {
+           // stuff here
+        } 
+    when you use them inside of an object (unless you're doing something special) */
+    
     const userDataView = {
+        // maybe its better to just "use strict" here because you use it in every function
         fillTemplate : (data, element, templateID) => {
             "use strict";
             const elementToFill = document.getElementById(element);
