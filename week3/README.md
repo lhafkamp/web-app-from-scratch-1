@@ -20,3 +20,10 @@ _The first three filters can be combined._
 * Better code structure
 * Cleaner objects/code
 * Add loadingscreen
+
+###Usage
+......
+###Sources
+.....
+###Live preview
+...
