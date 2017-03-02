@@ -30,26 +30,31 @@
             } else {
                 userDataView.fillTemplate(JSON.parse(localStorage.getItem("users")).filter((user) =>  user.nat === e.target.getAttribute("country").toUpperCase()), "users", "profile-picture")
             }
+            $userDataController.sortByUserName();
         },
         showSpecificUser : (id) => {
             userDataView.fillTemplate(JSON.parse(localStorage.getItem("users")).filter((user) => user.login.username === id), "user-information", "user-info")
         },
         sortByUserName() {
             "use strict";
-            const allUsersShown = Array.from(document.querySelectorAll('#users div'));
+            const sortParentElement = document.getElementById("sorter");
+            const sortUsersCheckbox = document.getElementById("sorter-checkbox");
+            if (sortUsersCheckbox.checked) {
+                console.log("hey");
+                sortParentElement.style.backgroundColor = "#313e3e";
+                const allUsersShown = Array.from(document.querySelectorAll('#users div'));
+                const orderedUsersNames = allUsersShown.sort((a, b) => a.innerText > b.innerText ? 1 : -1);
+                let orderedUsersData = [];
 
-            const orderedUsersNames = allUsersShown.sort((a, b) => a.innerText > b.innerText ? 1 : -1);
-
-            let orderedUsersData = []
-
-            orderedUsersNames.map((orderedUser) => {
-                JSON.parse(localStorage.getItem("users")).map((allUser) => {
-                    if (allUser.login.username === orderedUser.innerText.trim()) orderedUsersData.push(allUser);
-                })
-            });
-
-            userDataView.fillTemplate(orderedUsersData, "users", "profile-picture");
-
+                orderedUsersNames.map((orderedUser) => {
+                    JSON.parse(localStorage.getItem("users")).map((allUser) => {
+                        if (allUser.login.username === orderedUser.innerText.trim()) orderedUsersData.push(allUser);
+                    });
+                });
+                userDataView.fillTemplate(orderedUsersData, "users", "profile-picture");
+            } else {
+                sortParentElement.style.backgroundColor = "#485A5A";
+            }
         },
         clearUserInfo : () => {
             "use strict";
@@ -74,11 +79,10 @@
             "use strict";
             const countryFilter = Array.from(document.getElementsByClassName("flag"));
             countryFilter.map((country) => {country.addEventListener("click", $userDataController.filterUsersByCountry)});
-
         },
         initiateSort : () => {
             "use strict";
-            const sortFilter = document.getElementById("sorter");
+            const sortFilter = document.getElementById("sorter-checkbox");
             sortFilter.addEventListener("click", $userDataController.sortByUserName)
         }
     };
@@ -123,9 +127,13 @@
                 $userDataController.clearUserInfo();
                 $userDataController.filterUsersByGender();
                 $userDataController.showSpecificUser(id);
+                $userDataController.sortByUserName();
+
             } else {
                 $userDataController.clearUserInfo();
                 $userDataController.filterUsersByGender();
+                $userDataController.sortByUserName();
+
             }
         },
     };

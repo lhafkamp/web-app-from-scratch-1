@@ -24,6 +24,12 @@ body {
 .hide {
   display: none; }
 
+label {
+  padding: 1em 2em; }
+
+#sorter-checkbox {
+  display: none; }
+
 section {
   display: flex;
   flex-direction: column; }
