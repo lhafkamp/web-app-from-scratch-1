@@ -34,18 +34,18 @@
         },
         showSpecificUser : (id) => {
             userDataView.fillTemplate(JSON.parse(localStorage.getItem("users")).filter((user) => user.login.username === id), "user-information", "user-info")
+            document.getElementById("user-information").classList.add("mid-screen");
+            document.getElementById("main-page").classList.add("de-emphasized");
         },
         sortByUserName() {
             "use strict";
             const sortParentElement = document.getElementById("sorter");
             const sortUsersCheckbox = document.getElementById("sorter-checkbox");
             if (sortUsersCheckbox.checked) {
-                console.log("hey");
                 sortParentElement.style.backgroundColor = "#313e3e";
                 const allUsersShown = Array.from(document.querySelectorAll('#users div'));
                 const orderedUsersNames = allUsersShown.sort((a, b) => a.innerText > b.innerText ? 1 : -1);
                 let orderedUsersData = [];
-
                 orderedUsersNames.map((orderedUser) => {
                     JSON.parse(localStorage.getItem("users")).map((allUser) => {
                         if (allUser.login.username === orderedUser.innerText.trim()) orderedUsersData.push(allUser);
@@ -68,7 +68,6 @@
     const userDataView = {
         fillTemplate : (data, element, templateID) => {
             "use strict";
-            console.log(data);
             const elementToFill = document.getElementById(element);
             const templateToFill = document.getElementById(templateID).innerHTML;
             const renderer = Handlebars.compile(templateToFill);
@@ -84,6 +83,21 @@
             "use strict";
             const sortFilter = document.getElementById("sorter-checkbox");
             sortFilter.addEventListener("click", $userDataController.sortByUserName)
+        },
+        initiatedSideClick : () => {
+            "use strict";
+            const mainPage = document.getElementsByTagName("body")[0];
+            console.log(mainPage);
+            mainPage.addEventListener("click", () => {
+                console.log("hey");
+                const userInfoTable = document.getElementById("user-information");
+                if (userInfoTable.classList.contains("mid-screen")) {
+                    document.getElementById("main-page").classList.remove("de-emphasized")
+                    userInfoTable.classList.remove("mid-screen")
+                    userInfoTable.innerHTML = "";
+                    window.location.hash = '#' + $apiCache.settings.gender;
+                }
+            })
         }
     };
 
@@ -97,6 +111,7 @@
             routes.init();
             userDataView.initiateCountryFilters(); // Misschien op andere manier
             userDataView.initiateSort(); // Misschien op andere manier
+            userDataView.initiatedSideClick();
         }
     };
 

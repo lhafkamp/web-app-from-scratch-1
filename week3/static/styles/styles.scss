@@ -115,6 +115,7 @@ $typography-scale: (
 
 
 
+
 body {
   margin: 0;
   font-family: $sans-serif-font;
@@ -213,7 +214,6 @@ nav {
   }
 
 }.table-fill {
-   background: white;
    border-radius:3px;
    border-collapse: collapse;
    height: 320px;
@@ -223,8 +223,19 @@ nav {
    width: 100%;
    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
    animation: float 5s infinite;
+   transition: 3s;
  }
-
+.de-emphasized {
+  filter: blur(3px) contrast(.8) brightness(.8);
+}
+.mid-screen {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: 3s;
+}
 th {
   color:#D5DDE5;;
   background:$dblue;
@@ -238,6 +249,7 @@ th {
 tr {
   border-top: 1px solid #C1C3D1;
   border-bottom-: 1px solid #C1C3D1;
+  background-color: white;
   color:#666B85;
   font-size:16px;
   font-weight:normal;
