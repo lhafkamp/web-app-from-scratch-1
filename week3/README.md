@@ -13,8 +13,8 @@ I also created a flowchart and actor diagram for the script I wrote which can be
 _The first three filters can be combined._
 
 ###Flowchart and Actor diagram
+![GitHub Logo](web-app-from-scratch/week3/spa-week3-flow.png)
 
-[[https://github.com/Djaygo/web-app-from-scratch/blob/master/week3/spa-week3-flow.png]]
 ###Wishlist
 * Add different kind of filters
 * Better code structure
